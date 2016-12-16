@@ -1,6 +1,6 @@
 body
 {
-	background-color: grey;
+	background-color: lightgrey;
 	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
 }
 
@@ -10,7 +10,7 @@ h1
 	font-size: 40px;
 	font-style: normal;
 	font-variant: normal;
-	font-weight: bold;
+	font-weight: 500;
 	line-height: 26px;
 }
 
