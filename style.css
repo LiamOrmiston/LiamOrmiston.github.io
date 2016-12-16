@@ -1,7 +1,13 @@
 body
 {
-	background-color: lightgrey;
+	background-color: white;
 	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
+}
+
+div
+{
+  background-color: lightblue;
+  text-align: center;
 }
 
 h1
@@ -12,6 +18,7 @@ h1
 	font-variant: normal;
 	font-weight: 500;
 	line-height: 26px;
+  letter-spacing: 2px;
 }
 
 h3
