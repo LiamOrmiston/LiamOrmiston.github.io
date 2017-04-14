@@ -1,24 +1,24 @@
 body
 {
-	background-color: white;
+	background-color: #5DADE2;
 	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
+	text-align: center;
 }
 
 div
 {
-  background-color: lightblue;
   text-align: center;
 }
 
 h1
 {
 	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
-	font-size: 40px;
+	font-size: 80px;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 500;
 	line-height: 26px;
-  letter-spacing: 6px;
+	text-align: center;
 }
 
 h3
@@ -30,14 +30,23 @@ h3
 	font-weight: 500;
 	line-height: 15px;
   letter-spacing: 2px;
+	text-align: center;
 }
 
 p
 {
 	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
-	font-size: 14px;
+	font-size: 24px;
 	font-style: normal;
 	font-variant: normal;
-	font-weight: 400;
-	line-height: 20px;
+	text-align: justify;
+	margin: 10px;
+}
+
+.img-circle {
+    border-radius: 50%;
+}
+
+li{
+	text-align: center;
 }
