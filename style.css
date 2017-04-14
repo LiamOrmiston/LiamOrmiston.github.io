@@ -43,10 +43,6 @@ p
 	margin: 10px;
 }
 
-.img-circle {
+img-circle {
     border-radius: 50%;
-}
-
-li{
-	text-align: center;
 }
