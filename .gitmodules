@@ -4,3 +4,6 @@
 [submodule "448_lab4"]
 	path = 448_lab4
 	url = https://github.com/LiamOrmiston/448_lab4.git
+[submodule "image-service-ui"]
+	path = image-service-ui
+	url = https://github.com/LiamOrmiston/image-service-ui.git
