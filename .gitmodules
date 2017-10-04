@@ -1,3 +1,6 @@
 [submodule "448_lab3"]
 	path = 448_lab3
 	url = https://github.com/LiamOrmiston/448_lab3.git
+[submodule "448_lab4"]
+	path = 448_lab4
+	url = https://github.com/LiamOrmiston/448_lab4.git
