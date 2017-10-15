@@ -11,6 +11,14 @@ h1 {
 	line-height: 37px;
 	margin: 0px 0px 10px;
 }
+h2 {
+	margin-top: 0px;
+	margin-bottom: 10px;
+	font-family: Roboto, sans-serif;
+	font-size: 32px;
+	line-height: 36px;
+	font-weight: 300;
+}
 
 h3 {
 	font-size: 24px;
@@ -69,4 +77,37 @@ p {
 .logo-link {
 	color: #333;
 	text-decoration: none;
+}
+.section {
+	padding-top: 65px;
+	padding-bottom: 65px;
+	background-color: #272727;
+}
+.section.grey {
+	background-color: #f0f0f0;
+}
+.section.green {
+	background-color: #1b1b1b;
+}
+.align-right {
+	padding-right: 25px;
+	text-align: right;
+}
+.heading {
+	color: #ddca3c;
+}
+.heading-2 {
+	color: #fff;
+}
+.leadership-entry {
+	display: block;
+	margin-bottom: 19px;
+	padding: 18px 20px;
+	border: 1px solid #dce6e4;
+	transition: background-color 300ms ease;
+	color: #333;
+	text-decoration: none;
+}
+.leadership-entry:hover {
+	background-color: #1d1c1c;
 }
