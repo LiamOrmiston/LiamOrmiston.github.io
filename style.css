@@ -1,48 +1,72 @@
-body
-{
-	background-color: #5DADE2;
-	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
-	text-align: center;
+body {
+	color: #333;
+	font-family: Roboto, sans-serif;
+	font-size: 14px;
+	line-height: 20px;
 }
 
-div
-{
-  text-align: center;
+h1 {
+	font-size: 38px;
+	font-weight: 300;
+	line-height: 37px;
+	margin: 0px 0px 10px;
 }
 
-h1
-{
-	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
-	font-size: 80px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 500;
-	line-height: 26px;
-	text-align: center;
-}
-
-h3
-{
-	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
-	font-size: 32px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 500;
-	line-height: 15px;
-  letter-spacing: 2px;
-	text-align: left;
-}
-
-p
-{
-	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
+h3 {
 	font-size: 24px;
-	font-style: normal;
-	font-variant: normal;
-	text-align: justify;
-	margin: 10px;
+	font-weight: 300;
+	line-height: 30px;
+	margin: 0px 0px 10px;
 }
 
-.img-circle {
-    border-radius: 50%;
+p {
+	margin-top: 0px;
+	margin-bottom: 15px;
+	color: #9ea8a4;
+	font-size: 14px;
+	line-height: 23px;
+}
+.header {
+	height: 530px;
+	background-image: url("IMG_2516.jpg");
+	background-size: cover;
+	background-attachment: fixed;
+	box-shadow: inset 0 3px 0 0 #000;
+}
+.nav-link {
+	display: block;
+	margin-bottom: 8px;
+	font-family: 'Roboto Condensed', sans-serif;
+	color: #a83237;
+	font-size: 18px;
+	font-weight: 300;
+	text-decoration: none;
+	text-transform: capitalize;
+}
+.nav-link:hover {
+	color: #32a84e
+}
+.navigation {
+	position: fixed;
+	z-index: 10;
+	padding: 33px 19px 38px;
+	border-top: 3px solid #a83237;
+	background-color: rgba(54, 54, 54, 0);
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+.logo {
+	display: block;
+	margin-top: -6px;
+	margin-bottom: 20px;
+	padding-top: 0px;
+	color: #ddca3c;
+	font-size: 33px;
+	line-height: 36px;
+	font-weight: 300;
+	text-align: left;
+	text-transform: capitalize;
+}
+.logo-link {
+	color: #333;
+	text-decoration: none;
 }
