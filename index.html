@@ -179,7 +179,14 @@
           <h2 class="heading">Contact</h2>
         </div>
         <div class="w-col w-col-2">
-          <!-- TODO: put old form here -->
+          <div class="w-form">
+            <form action="https://formspree.io/ljormiston@ku.edu" method="POST">
+              <input type="text" name="name" maxlength="256" placeholder="Enter your name" class="field w-input" required><br>
+              <input type="email" name="email" maxlength="256" placeholder="Enter your email" class="field w-input" required><br>
+              <textarea rows="3" name="message" maxlength="5000" placeholder="Enter your message" class="comments field w-input" required></textarea><br>
+              <input type="submit" value="Send Message" data-wait="Please wait..." class="button w-button">
+            </form>
+          </div>
         </div>
       </div>
     </div>

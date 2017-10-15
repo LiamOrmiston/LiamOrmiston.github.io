@@ -5,7 +5,17 @@ body {
 	line-height: 20px;
 	margin: 0;
 }
-
+.button {
+    display: inline-block;
+    padding: 14px 26px;
+    background-color: #a83237;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+}
+.button:hover {
+    background-color: #32a84e;
+}
 h1 {
 	font-size: 38px;
 	font-weight: 300;
@@ -129,12 +139,13 @@ p {
     margin-right: auto;
     max-width: 940px
 }
-
 .w-container:before, .w-container:after {
     content: " ";
     display: table
 }
-
+.w-form {
+    margin: 0 0 15px
+}
 .w-col {
     position: relative;
     float: left;
@@ -148,7 +159,43 @@ p {
 .w-col-1 {
     width: 33.33333333%
 }
-
 .w-col-2 {
     width: 66.66666667%
+}
+.w-input, .w-select {
+    display: block;
+    width: 100%;
+    height: 38px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: white;
+    vertical-align: middle;
+    background-color: #ffffff;
+    border: 1px solid #cccccc
+}
+.w-button {
+    display: inline-block;
+    padding: 9px 15px;
+    background-color: #a83237;
+    color: white;
+    border: 0;
+    line-height: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 0
+}
+.field {
+    height: 53px;
+    border: 1px solid #d1e6dd;
+    background-color: #272727;
+    box-shadow: inset 0 1px 0 0 transparent;
+}
+.field:focus {
+    border-color: #24c786;
+    box-shadow: inset 0 0 8px 0 transparent;
+}
+.field.comments {
+    height: 101px;
 }
