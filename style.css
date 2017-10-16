@@ -207,3 +207,23 @@ img {
 .field.comments {
     height: 101px;
 }
+@media (max-width: 800px) {
+    .header {
+        height: 410px;
+        background-position: center;
+    }
+		.navigation {
+			position: absolute;
+			background-color: #272727;
+		}
+		.align-right {
+			padding-right: 10px;
+			text-align: left;
+		}
+		.w-col-1 {
+		    width: 100%;
+		}
+		.w-col-2 {
+		    width: 100%;
+		}
+}
