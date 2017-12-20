@@ -103,6 +103,7 @@ img {
 	padding-top: 65px;
 	padding-bottom: 65px;
 	background-color: #272727;
+	overflow: auto;
 }
 .section.grey {
 	background-color: #f0f0f0;
