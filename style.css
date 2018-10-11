@@ -54,7 +54,7 @@ p {
 .masthead {
   margin-top: 0;
   background-color: #FFFEFC;
-  padding: inherit;
+  padding: 1em;
 }
 
 .nav-masthead .nav-link {
@@ -104,7 +104,7 @@ a:active {
 }
 
 .container {
-  margin-top: 30%;
+  margin-top: 30% !important;
   margin-bottom: 30%;
 }
 .container-bottom {
