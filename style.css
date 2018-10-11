@@ -101,8 +101,27 @@ a:active {
   nav {
     padding-right: 10%;
   }
-}
+  .heading {
+    padding-top: 0 !important;
+  }
+  .anim-typewriter{
+    animation: typewriter 2s steps(22) 1s 1 normal both, blinkTextCursor 800ms steps(44) infinite normal;
+  }
+  /* The typing effect */
+  @keyframes typewriter {
+    from { width: 0 }
+    to { width: 270px }
+  }
 
+  /* The typewriter cursor effect */
+  @keyframes blinkTextCursor {
+    from, to { border-color: transparent }
+    50% { border-color: #850009 }
+  }
+}
+.heading {
+  padding-top: 3em;
+}
 .container {
   margin-top: 30% !important;
   margin-bottom: 30%;
@@ -110,7 +129,6 @@ a:active {
 .container-bottom {
   margin-bottom: 8.4% !important;
 }
-
 /* Animated Cover */
 .cover-heading {
   height: 100%;
@@ -122,20 +140,7 @@ a:active {
   overflow: hidden;
   transform: translateY(-50%);
 }
-.anim-typewriter{
-  animation: typewriter 2s steps(22) 1s 1 normal both, blinkTextCursor 800ms steps(44) infinite normal;
-}
-/* The typing effect */
-@keyframes typewriter {
-  from { width: 0 }
-  to { width: 270px }
-}
 
-/* The typewriter cursor effect */
-@keyframes blinkTextCursor {
-  from, to { border-color: transparent }
-  50% { border-color: #850009 }
-}
 
 /* Contact Form */
 .w-form {
