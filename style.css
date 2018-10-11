@@ -75,12 +75,12 @@ nav {
 }
 #experience_link:hover,
 #experience_link.active {
-  border-bottom-color: #449c73;
+  border-bottom-color: #f0cacf;
   border-top-width: medium;
 }
 #contact_link:hover,
 #contact_link.active {
-  border-bottom-color: #f0cacf;
+  border-bottom-color: #449c73;
   border-top-width: medium;
 }
 
@@ -163,7 +163,7 @@ a:active {
 }
 .w-button {
   margin-top: 2rem;
-  background-color: #2e6c78;
+  background-color: #449c73;
   color: #FFFEFC;
   border: 0;
   cursor: pointer;
