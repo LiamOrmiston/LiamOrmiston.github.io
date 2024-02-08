@@ -113,7 +113,7 @@ a:active {
   /* The typing effect */
   @keyframes typewriter {
     from { width: 0 }
-    to { width: 270px }
+    to { width: 295px }
   }
 
   /* The typewriter cursor effect */
