@@ -54,59 +54,69 @@ modelLoader.load( 'Rock/rock.glb', function ( gltf ) {
 
 // track object's position and mouse position
 var raycaster = new THREE.Raycaster();
-var inputPosition = new THREE.Vector2();
+var mousePosition = new THREE.Vector2();
 var heldModel = null; // Initialize as null to indicate no model is currently held
-var isInputDown = false; // Variable to track if input is active
-var isDragging = false; // Variable to track if input is being dragged
-var previousInputX = 0; // Variable to track previous input position
+var isMouseDown = false; // Variable to track if mouse button is pressed
+var previousMouseX = 0; // Variable to track previous mouse position
+var isDragging = false; // Variable to track if mouse is being dragged
 
-// Threshold for input movement to consider it a drag
+// Threshold for mouse movement to consider it a drag
 var dragThreshold = 5; // Adjust as needed
 
-// Add event listeners for both mouse and touch events
+// Add event listener for mouse events
 window.addEventListener('click', onClick, false);
-window.addEventListener('mousedown', onInputDown, false);
-window.addEventListener('mouseup', onInputUp, false);
-window.addEventListener('touchstart', onTouchStart, false);
-window.addEventListener('touchmove', onTouchMove, false);
-window.addEventListener('touchend', onTouchEnd, false);
+window.addEventListener('mousedown', onMouseDown, false);
+window.addEventListener('mousemove', onMouseMove, false);
+window.addEventListener('mouseup', onMouseUp, false);
 
 function onClick(event) {
-    if (!isDragging && !isInputDown) {
-        // Calculate input position in normalized device coordinates
-        inputPosition.x = (event.clientX / window.innerWidth) * 2 - 1;
-        inputPosition.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    if (!isDragging && !isMouseDown) {
+        // Calculate mouse position in normalized device coordinates
+        mousePosition.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mousePosition.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-        // Handle click event
-        handleInput();
+        // Raycast from camera to find intersected objects
+        raycaster.setFromCamera(mousePosition, camera);
+        var intersects = raycaster.intersectObjects(models, true);
+
+        if (intersects.length > 0) {
+            // determine which object was clicked
+            var selectedModel = intersects[0].object;
+            if (heldModel !== selectedModel) {
+                // TODO: this could be a function
+                if (heldModel !== null) {
+                    var targetPosition = heldModel.userData.originalPosition;
+                    heldModel.position.copy(targetPosition);
+                    heldModel.rotate = !heldModel.rotate;
+                }
+                heldModel = selectedModel;
+            }
+            else {
+                heldModel = null;
+            }
+
+            // Move the clicked model closer to the camera
+            var targetPosition = selectedModel.position.z < -3 ? new THREE.Vector3(0, 0, 1) : selectedModel.userData.originalPosition;
+            selectedModel.position.copy(targetPosition);
+
+            // Stop rotation animation for the clicked model
+            selectedModel.rotate = !selectedModel.rotate;
+        }
     }
 }
 
-function onInputDown(event) {
-    isInputDown = true;
-    previousInputX = event.clientX || event.touches[0].clientX; // Record initial input position
+function onMouseDown(event) {
+    isMouseDown = true;
+    previousMouseX = event.clientX; // Record initial mouse position
     isDragging = false; // Reset dragging flag
 }
 
-function onInputUp(event) {
-    isInputDown = false;
-    if (!isDragging && heldModel) {
-        // Handle click event if not dragging
-        handleInput();
-    }
-    isDragging = false; // Reset dragging flag
-}
+function onMouseMove(event) {
+    if (isMouseDown && heldModel) {
+        // Calculate change in mouse position
+        var deltaX = event.clientX - previousMouseX;
 
-function onTouchStart(event) {
-    onInputDown(event); // Call the same logic as mouse down
-}
-
-function onTouchMove(event) {
-    if (isInputDown && heldModel) {
-        // Calculate change in input position
-        var deltaX = (event.clientX || event.touches[0].clientX) - previousInputX;
-
-        // If input movement exceeds the threshold, consider it a drag
+        // If mouse movement exceeds the threshold, consider it a drag
         if (!isDragging && Math.abs(deltaX) > dragThreshold) {
             isDragging = true;
         }
@@ -116,42 +126,17 @@ function onTouchMove(event) {
             heldModel.rotateY(deltaX * 0.01); // Adjust rotation speed as needed
         }
 
-        previousInputX = event.clientX || event.touches[0].clientX; // Update previous input position
+        previousMouseX = event.clientX; // Update previous mouse position
     }
 }
 
-function onTouchEnd(event) {
-    onInputUp(event); // Call the same logic as mouse up
-}
-
-function handleInput() {
-    // Raycast from camera to find intersected objects
-    raycaster.setFromCamera(inputPosition, camera);
-    var intersects = raycaster.intersectObjects(models, true);
-
-    if (intersects.length > 0) {
-        // determine which object was clicked
-        var selectedModel = intersects[0].object;
-        if (heldModel !== selectedModel) {
-            // TODO: this could be a function
-            if (heldModel !== null) {
-                var targetPosition = heldModel.userData.originalPosition;
-                heldModel.position.copy(targetPosition);
-                heldModel.rotate = !heldModel.rotate;
-            }
-            heldModel = selectedModel;
-        }
-        else {
-            heldModel = null;
-        }
-
-        // Move the clicked model closer to the camera
-        var targetPosition = selectedModel.position.z < -3 ? new THREE.Vector3(0, 0, 1) : selectedModel.userData.originalPosition;
-        selectedModel.position.copy(targetPosition);
-
-        // Stop rotation animation for the clicked model
-        selectedModel.rotate = !selectedModel.rotate;
+function onMouseUp(event) {
+    isMouseDown = false;
+    if (!isDragging && heldModel) {
+        // Perform click action if not dragging
+        // (You can add custom click behavior here)
     }
+    // isDragging = false; // Reset dragging flag
 }
 
 // Render the scene
