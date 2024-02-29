@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic SVG</title>
+<style>
+    /* Centering container */
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Full height of the viewport */
+    }
+
+    /* Container for the SVG */
+    .svg-container {
+        text-align: center; /* Center the SVG horizontally */
+        margin-bottom: 20px; /* Add space between SVG and slider */
+    }
+
+    /* Styles for the slider */
+    .slider {
+        width: 100%;
+        max-width: 300px; /* Limit the width of the slider */
+        height: 15px;
+        border-radius: 5px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        transition: opacity .2s;
+    }
+
+    .slider:hover {
+        opacity: 1;
+    }
+
+    /* Styles for the SVG */
+    #mySVG {
+        width: 300px; /* Initial width */
+        height: auto; /* Auto height */
+    }
+
+    /* Styles for the text inside the SVG */
+    #myText {
+        font-family: Arial;
+        font-size: 100px; /* Initial font size */
+        fill: black;
+        text-anchor: middle; /* Center text horizontally */
+        dominant-baseline: middle; /* Center text vertically */
+        transform-origin: center; /* Set the transform origin */
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="svg-container">
+		<h2>Dynamic SVG</h2>
+        <svg id="mySVG" xmlns="http://www.w3.org/2000/svg">
+            <text id="myText" x="50%" y="50%">M</text>
+        </svg>
+		<input type="range" min="100" max="1000" value="300" class="slider" id="myRange">
+    </div>
+</div>
+
+<script>
+    // Get the range slider and the text element inside the SVG
+    var slider = document.getElementById("myRange");
+    var svgText = document.getElementById("myText");
+
+    // Function to update the width of the text element based on the slider value
+    function updateTextWidth() {
+        // Calculate the new width based on the slider value
+        var newWidth = slider.value;
+        svgText.setAttribute("x", "50%"); // Reset x position to center
+
+        // Set the new width to the text element
+        svgText.setAttribute("transform", "scale(" + newWidth / 300 + ",1)");
+    }
+
+    // Call the function when the slider value changes
+    slider.addEventListener("input", updateTextWidth);
+</script>
+
+</body>
+</html>
