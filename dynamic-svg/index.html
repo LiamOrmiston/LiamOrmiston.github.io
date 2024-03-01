@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geologica:slnt,wght@-12..0,100..900">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dynamic SVG</title>
@@ -9,8 +10,13 @@
     .container {
         display: flex;
         justify-content: center;
+        flex-direction: column;
         align-items: center;
         height: 100vh; /* Full height of the viewport */
+    }
+    .sub-container {
+        display: flex;
+        margin: 50px;
     }
 
     /* Container for the SVG */
@@ -22,6 +28,8 @@
     /* Styles for the slider */
     .slider {
         width: 100%;
+        margin-left: 20px;
+        margin-right: 20px;
         max-width: 300px; /* Limit the width of the slider */
         height: 15px;
         border-radius: 5px;
@@ -50,6 +58,12 @@
         dominant-baseline: middle; /* Center text vertically */
         transform-origin: center; /* Set the transform origin */
     }
+    .text_container {
+        font-family: "Geologica";
+        font-size: 120px;
+        line-height: 120px;
+        height: 120px;
+    }
 </style>
 </head>
 <body>
@@ -61,6 +75,19 @@
             <text id="myText" x="50%" y="50%">M</text>
         </svg>
 		<input type="range" min="100" max="1000" value="300" class="slider" id="myRange">
+    </div>
+</div>
+
+<div class="container">
+    <div class="sub-container">
+        <h2>Dynamic Font</h2>
+    </div>
+    <div class="text_container" id="spanText" style="font-weight: 400, font-variation-settings: 'slnt' 0">
+        <span contenteditable="true" spellcheck="false" placeholder="Hire Liam">Hire Liam</span>
+    </div>
+    <div class="sub-container">
+        <input type="range" min="100" max="900" value="400" class="slider" id="weight" step=10>
+        <input type="range" min="-12" max="0" value="0" class="slider" id="slant" step=1>
     </div>
 </div>
 
@@ -79,8 +106,27 @@
         svgText.setAttribute("transform", "scale(" + newWidth / 300 + ",1)");
     }
 
+    var spanText = document.getElementById("spanText");
+    var weightSlider = document.getElementById("weight");
+    var slantSlider = document.getElementById("slant");
+
+    // Function to update the weight of the font
+    function updateWeight() {
+        var newWeight = weightSlider.value;
+        spanText.style.fontWeight = newWeight;
+    }
+
+    // Function to update the weight of the font
+    function updateSlant() {
+        var newSlant = slantSlider.value;
+        spanText.style.fontVariationSettings = "'slnt' " + newSlant;
+    }
+
+
     // Call the function when the slider value changes
     slider.addEventListener("input", updateTextWidth);
+    weightSlider.addEventListener("input", updateWeight);
+    slantSlider.addEventListener("input", updateSlant);
 </script>
 
 </body>
