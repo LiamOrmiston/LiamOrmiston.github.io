@@ -100,7 +100,6 @@
     function updateTextWidth() {
         // Calculate the new width based on the slider value
         var newWidth = slider.value;
-        svgText.setAttribute("x", "50%"); // Reset x position to center
 
         // Set the new width to the text element
         svgText.setAttribute("transform", "scale(" + newWidth / 300 + ",1)");
