@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>OTB</title>
+        <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+	</head>
+	<body>
+        <div>
+            <label for="delayTimeSlider">Delay Time:</label>
+            <input type="range" id="delayTimeSlider" min="0" max="1000" value="200">
+            <span id="delayTimeValue">200</span>
+            <br>
+            <label for="rotationStrengthXSlider">Rotation Strength X:</label>
+            <input type="range" id="rotationStrengthXSlider" min="0" max="5" step="0.1" value="1.5">
+            <span id="rotationStrengthXValue">1.5</span>
+            <br>
+            <label for="rotationStrengthYSlider">Rotation Strength Y:</label>
+            <input type="range" id="rotationStrengthYSlider" min="0" max="5" step="0.1" value="1">
+            <span id="rotationStrengthYValue">1</span>
+            <br>
+            <label for="xUpperBoundSlider">X Upper Bound:</label>
+            <input type="range" id="xUpperBoundSlider" min="0" max="1000" value="460">
+            <span id="xUpperBoundValue">460</span>
+            <br>
+            <label for="xLowerBoundSlider">X Lower Bound:</label>
+            <input type="range" id="xLowerBoundSlider" min="0" max="1000" value="260">
+            <span id="xLowerBoundValue">260</span>
+            <br>
+            <label for="yUpperBoundSlider">Y Upper Bound:</label>
+            <input type="range" id="yUpperBoundSlider" min="0" max="100" value="85">
+            <span id="yUpperBoundValue">85</span>
+            <br>
+            <label for="yLowerBoundSlider">Y Lower Bound:</label>
+            <input type="range" id="yLowerBoundSlider" min="0" max="100" value="70">
+            <span id="yLowerBoundValue">70</span>
+            <br>
+        </div>
+        <div>
+            <model-viewer 
+              id="myModelViewer"
+              alt="" 
+              src="https://raw.githubusercontent.com/LiamOrmiston/one-thousand-bison/main/bison_3.gltf"
+              style="width: 100%; height: 100vh;"
+              interaction-prompt="none"
+              camera-orbit="270deg 80deg 110%"
+            ></model-viewer>
+        </div>
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            let mouseX = 0;
+            let mouseY = 0;
+            let targetRotationX = 0;
+            let targetRotationY = 0;
+            let easingFactor = 0.05;
+
+            let delayTime = 200; // in milliseconds
+            let rotationStrengthX = 1.5
+            let rotationStrengthY = 1
+            let xUpperBound = 460
+            let xLowerBound = 260
+            let yUpperBound = 85
+            let yLowerBound = 70
+
+            function getMouse(e){
+              mouseX = e.clientX;
+              mouseY = e.clientY;
+              clearTimeout(delayTimer); // Clear existing timer
+              delayTimer = setTimeout(updateTargetRotation, delayTime);
+            }
+
+            let delayTimer;
+
+            function updateTargetRotation() {
+              const dx = (mouseX - window.innerWidth / 2);
+              const dy = (mouseY - window.innerHeight / 2);
+              const dxDir = dx > 0 ? 1 : -1;
+              const dyDir = dy > 0 ? 1 : -1;
+
+              targetRotationX = rotationStrengthX * dxDir;
+              targetRotationY = rotationStrengthY * dyDir;
+            }
+
+            document.addEventListener('mousemove', getMouse);
+
+            function rotateModel() {
+              const modelViewer = document.querySelector("#myModelViewer");
+              if (!modelViewer.cameraOrbit) {
+                requestAnimationFrame(animate);
+                return;
+              }
+              const currentRotation = modelViewer.cameraOrbit.split(' ').map(parseFloat);
+
+              let newRotationX = currentRotation[0] + (targetRotationX * easingFactor);
+              let newRotationY = currentRotation[1] + (targetRotationY * easingFactor);
+
+              if (newRotationY > yUpperBound) {
+                  newRotationY = yUpperBound;
+              }
+              else if (newRotationY < yLowerBound) {
+                  newRotationY = yLowerBound;
+              }
+              if (newRotationX > xUpperBound) {
+                  newRotationX = xUpperBound;
+              }
+              else if (newRotationX < xLowerBound) {
+                  newRotationX = xLowerBound;
+              }
+
+              modelViewer.cameraOrbit = `${newRotationX}deg ${newRotationY}deg 110%`;
+            }
+
+            function animate() {
+              rotateModel();
+              requestAnimationFrame(animate);
+            }
+                        // Bind slider values to constants
+            document.getElementById('delayTimeSlider').addEventListener('input', function() {
+                delayTime = parseInt(this.value);
+                document.getElementById('delayTimeValue').innerText = delayTime;
+
+            });
+
+            document.getElementById('rotationStrengthXSlider').addEventListener('input', function() {
+                rotationStrengthX = parseFloat(this.value);
+                document.getElementById('rotationStrengthXValue').innerText = rotationStrengthX;
+            });
+
+            document.getElementById('rotationStrengthYSlider').addEventListener('input', function() {
+                rotationStrengthY = parseFloat(this.value);
+                document.getElementById('rotationStrengthYValue').innerText = rotationStrengthY;
+            });
+
+            document.getElementById('xUpperBoundSlider').addEventListener('input', function() {
+                xUpperBound = parseInt(this.value);
+                document.getElementById('xUpperBoundValue').innerText = xUpperBound;
+            });
+
+            document.getElementById('xLowerBoundSlider').addEventListener('input', function() {
+                xLowerBound = parseInt(this.value);
+                document.getElementById('xLowerBoundValue').innerText = xLowerBound;
+            });
+
+            document.getElementById('yUpperBoundSlider').addEventListener('input', function() {
+                yUpperBound = parseInt(this.value);
+                document.getElementById('yUpperBoundValue').innerText = yUpperBound;
+            });
+
+            document.getElementById('yLowerBoundSlider').addEventListener('input', function() {
+                yLowerBound = parseInt(this.value);
+                document.getElementById('yLowerBoundValue').innerText = yLowerBound;
+            });
+
+            animate();
+          });
+        </script>
+	</body>
+</html>
