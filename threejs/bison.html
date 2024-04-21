@@ -8,8 +8,8 @@
 	<body>
         <div>
             <label for="delayTimeSlider">Delay Time:</label>
-            <input type="range" id="delayTimeSlider" min="0" max="1000" value="700">
-            <span id="delayTimeValue">700</span>
+            <input type="range" id="delayTimeSlider" min="0" max="1000" value="300">
+            <span id="delayTimeValue">300</span>
             <br>
             <label for="rotationStrengthXSlider">Rotation Strength X:</label>
             <input type="range" id="rotationStrengthXSlider" min="0" max="2" step="0.05" value="0.5">
@@ -36,8 +36,8 @@
             <span id="yLowerBoundValue">70</span>
             <br>
             <label for="easingTimeSlider">Easing Time:</label>
-            <input type="range" id="easingTimeSlider" min="0" max="2000" step="100" value="700">
-            <span id="easingTimeValue">700</span>
+            <input type="range" id="easingTimeSlider" min="0" max="2000" step="100" value="1200">
+            <span id="easingTimeValue">1200</span>
             <br>
             <label for="maxEasingSlider">Max Easing:</label>
             <input type="range" id="maxEasingSlider" min="0" max="0.2" step="0.01" value="0.08">
@@ -70,12 +70,12 @@
             let mouseY = 0;
             let targetRotationX = 0;
             let targetRotationY = 0;
-            let easingFactor = 0.1;
+            let curEasingFactor = 0.08;
             let maxEasingFactor = 0.08;
             let minEasingFactor = 0.02;
 
-            let delayTime = 700; // in milliseconds
-            let easingTime = 700; // in milliseconds
+            let delayTime = 300; // in milliseconds
+            let easingTime = 1200; // in milliseconds
             let rotationStrengthX = 0.6
             let rotationStrengthY = 0.4
             let xUpperBound = 460
@@ -94,9 +94,27 @@
               mouseX = e.clientX;
               mouseY = e.clientY;
               clearTimeout(delayTimer); // Clear existing timer
-              delayTimer = setTimeout(updateTargetRotation, delayTime);
+              delayTimer = setTimeout(startTransition, delayTime);
+            }
+
+            document.addEventListener('mousemove', getMouse);
+
+            function startTransition() {
               decreaseEasing = true;
               lastMouseUpdateTime = performance.now();
+            }
+
+            function cubicEaseIn(t) {
+              return t < 0.5 ? 2 * t * t : 1 - ((-2 * t + 2) ** 2) / 2;
+            }
+
+            function decreaseEasingFactors() {
+              const easingProgress = (performance.now() - lastMouseUpdateTime) / easingTime;
+              curEasingFactor = maxEasingFactor - cubicEaseIn(Math.min(1, easingProgress)) * (maxEasingFactor - minEasingFactor); 
+              if (Math.round(curEasingFactor * 100) / 100 === minEasingFactor) {
+                decreaseEasing = false;
+                updateTargetRotation();
+              }
             }
 
             function updateTargetRotation() {
@@ -108,41 +126,16 @@
               targetRotationX = rotationStrengthX * dxDir;
               targetRotationY = rotationStrengthY * dyDir;
               increaseEasing = true;
-              decreaseEasing = false;
               lastMouseUpdateTime = performance.now();
             }
 
-            function cubicEaseIn(t) {
-              return t < 0.5 ? 2 * t * t : 1 - ((-2 * t + 2) ** 2) / 2;
-            }
-            function easeOutCirc(t) {
-              return Math.sqrt(1 - Math.pow(t - 1, 2));
-            }
-
-            function cubicEaseOut(t) {
-              return 1 - (1 - t) ** 3;
-            }
-
-            function decreaseEasingFactors() {
-              const easingProgress = (performance.now() - lastMouseUpdateTime) / easingTime;
-              easingFactor = maxEasingFactor - cubicEaseIn(Math.min(1, easingProgress)) * (maxEasingFactor - minEasingFactor); 
-              if (Math.round(easingFactor * 100) / 100 === minEasingFactor) {
-                lastMouseUpdateTime = performance.now();
-                decreaseEasing = false;
-              }
-            }
-
             function increaseEasingFactors() {
-              console.log(easingFactor);
               const easingProgress = (performance.now() - lastMouseUpdateTime) / easingTime;
-              easingFactor = cubicEaseIn(Math.min(1, easingProgress)) * maxEasingFactor; 
-              if (Math.round(easingFactor * 100) / 100 === maxEasingFactor) {
-                console.log("off");
+              curEasingFactor = cubicEaseIn(Math.min(1, easingProgress)) * maxEasingFactor; 
+              if (Math.round(curEasingFactor * 100) / 100 === maxEasingFactor) {
                 increaseEasing = false;
               }
             }
-
-            document.addEventListener('mousemove', getMouse);
 
             function rotateModel() {
               if (!modelViewer.cameraOrbit) {
@@ -151,8 +144,8 @@
               }
               const currentRotation = modelViewer.cameraOrbit.split(' ').map(parseFloat);
 
-              let newRotationX = currentRotation[0] + (targetRotationX * easingFactor);
-              let newRotationY = currentRotation[1] + (targetRotationY * easingFactor);
+              let newRotationX = currentRotation[0] + (targetRotationX * curEasingFactor);
+              let newRotationY = currentRotation[1] + (targetRotationY * curEasingFactor);
 
               newRotationY = Math.min(Math.max(newRotationY, yLowerBound), yUpperBound);
               newRotationX = Math.min(Math.max(newRotationX, xLowerBound), xUpperBound);
