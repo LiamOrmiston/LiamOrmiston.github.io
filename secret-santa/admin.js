@@ -71,11 +71,17 @@
     });
 
     // rule selects
-    const options = ['<option value="">Select…</option>'].concat(
-      state.names.map(n => `<option value="${escapeHtml(n)}">${escapeHtml(n)}</option>`)
+    const giverValue = state.names.includes(els.giverSelect.value) ? els.giverSelect.value : '';
+    const giverOptions = ['<option value="">Select…</option>'].concat(
+      state.names.map(n => `<option value="${escapeHtml(n)}"${n === giverValue ? ' selected' : ''}>${escapeHtml(n)}</option>`)
     ).join('');
-    els.giverSelect.innerHTML = options;
-    els.receiverSelect.innerHTML = options;
+    els.giverSelect.innerHTML = giverOptions;
+
+    const receiverOptions = state.names
+      .filter(n => n !== els.giverSelect.value)
+      .map(n => `<option value="${escapeHtml(n)}">${escapeHtml(n)}</option>`)
+      .join('');
+    els.receiverSelect.innerHTML = receiverOptions;
 
     // rules grouped by giver (keeps page compact with many rules)
     els.rulesList.innerHTML = '';
@@ -293,6 +299,7 @@
   els.addNameBtn.addEventListener('click', addName);
   els.nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') addName(); });
   els.addRuleBtn.addEventListener('click', addRule);
+  els.giverSelect.addEventListener('change', () => { render(); });
   els.generateBtn.addEventListener('click', generate);
 
   els.namesList.addEventListener('click', e => {
