@@ -24,7 +24,7 @@
   let lastAssignmentsBlob = null;
 
   function defaultState() {
-    return { names: [], rules: [], trackingEndpoint: '' };
+    return { names: [], rules: [], trackingEndpoint: 'https://formspree.io/f/mjywyeqy' };
   }
 
   function loadState() {
@@ -35,7 +35,7 @@
       return {
         names: Array.isArray(parsed.names) ? parsed.names.filter(n => typeof n === 'string') : [],
         rules: Array.isArray(parsed.rules) ? parsed.rules.filter(r => r && typeof r.giver === 'string' && typeof r.receiver === 'string') : [],
-        trackingEndpoint: typeof parsed.trackingEndpoint === 'string' ? parsed.trackingEndpoint : '',
+        trackingEndpoint: typeof parsed.trackingEndpoint === 'string' && parsed.trackingEndpoint.trim() ? parsed.trackingEndpoint : 'https://formspree.io/f/mjywyeqy',
       };
     } catch (_) {
       return defaultState();
