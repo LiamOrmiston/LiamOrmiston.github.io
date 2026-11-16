@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Secret Santa Reveal</title>
+  <link rel="stylesheet" href="secret-santa.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Secret Santa Reveal</h1>
+    <p class="lead">Enter your name to find out who you got for Secret Santa.</p>
+
+    <section class="card">
+      <div id="loadStatus" class="status" aria-live="polite">Loading assignments…</div>
+
+      <form id="lookupForm" class="hidden" autocomplete="off">
+        <div class="field">
+          <label for="nameInput">Your name</label>
+          <input type="text" id="nameInput" placeholder="Enter your name" required />
+        </div>
+        <div class="actions">
+          <button type="submit" class="primary">Find my match</button>
+        </div>
+      </form>
+
+      <div id="lookupStatus" class="status" aria-live="polite"></div>
+
+      <div id="confirmBox" class="reveal-box hidden">
+        <p>Ready to reveal the match for <strong id="confirmName"></strong>?</p>
+        <div class="actions" style="justify-content:center;">
+          <button id="confirmRevealBtn" class="primary" type="button">Reveal</button>
+          <button id="cancelRevealBtn" type="button">Cancel</button>
+        </div>
+      </div>
+
+      <div id="resultBox" class="reveal-box hidden" aria-live="polite">
+        <div class="muted">Hi <span id="resultFor"></span>, you got:</div>
+        <div id="resultMatch" class="reveal-name"></div>
+      </div>
+    </section>
+
+    <p class="muted">If your name isn’t found, check the spelling or ask the organizer.</p>
+  </main>
+  <script src="reveal.js"></script>
+</body>
+</html>
