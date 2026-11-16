@@ -110,15 +110,41 @@
 
   function addRule() {
     const giver = els.giverSelect.value;
-    const receiver = els.receiverSelect.value;
-    if (!giver || !receiver) { setStatus(els.configStatus, 'Choose both a giver and a receiver for the rule.', 'error'); return; }
-    if (giver === receiver) { setStatus(els.configStatus, 'A rule where someone can’t get themselves is automatic; pick two different people.', 'error'); return; }
-    const exists = state.rules.some(r => r.giver === giver && r.receiver === receiver);
-    if (exists) { setStatus(els.configStatus, 'That rule already exists.', 'error'); return; }
-    state.rules.push({ giver, receiver });
-    setStatus(els.configStatus, 'Rule added (one-way).', 'success');
-    saveState();
-    render();
+    const receivers = Array.from(els.receiverSelect.selectedOptions || [])
+      .map(o => o.value)
+      .filter(Boolean);
+    if (!giver || receivers.length === 0) {
+      setStatus(els.configStatus, 'Choose a giver and at least one receiver for the rule.', 'error');
+      return;
+    }
+
+    let added = 0;
+    let duplicates = 0;
+    let selfSkipped = 0;
+
+    receivers.forEach(receiver => {
+      if (giver === receiver) { selfSkipped++; return; }
+      const exists = state.rules.some(r => r.giver === giver && r.receiver === receiver);
+      if (exists) { duplicates++; return; }
+      state.rules.push({ giver, receiver });
+      added++;
+    });
+
+    if (added > 0) {
+      const parts = [`Added ${added} rule${added === 1 ? '' : 's'} (one-way).`];
+      if (duplicates) parts.push(`${duplicates} duplicate${duplicates === 1 ? '' : 's'} skipped.`);
+      if (selfSkipped) parts.push(`${selfSkipped} self-match${selfSkipped === 1 ? '' : 'es'} skipped.`);
+      setStatus(els.configStatus, parts.join(' '), 'success');
+      saveState();
+      render();
+    } else if (duplicates || selfSkipped) {
+      const parts = [];
+      if (duplicates) parts.push(`${duplicates} duplicate${duplicates === 1 ? '' : 's'}`);
+      if (selfSkipped) parts.push(`${selfSkipped} self-match${selfSkipped === 1 ? '' : 'es'}`);
+      setStatus(els.configStatus, `No rules added (${parts.join(', ')} skipped).`, 'error');
+    } else {
+      setStatus(els.configStatus, 'No rules added.', 'error');
+    }
   }
 
   function downloadJson(filename, obj) {
