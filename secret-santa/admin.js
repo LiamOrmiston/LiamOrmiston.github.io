@@ -77,15 +77,38 @@
     els.giverSelect.innerHTML = options;
     els.receiverSelect.innerHTML = options;
 
-    // rules (drop rules referencing missing names for display consistency kept in data? keep but mark)
+    // rules grouped by giver (keeps page compact with many rules)
     els.rulesList.innerHTML = '';
     els.rulesEmpty.classList.toggle('hidden', state.rules.length > 0);
-    state.rules.forEach((rule, idx) => {
-      const valid = state.names.includes(rule.giver) && state.names.includes(rule.receiver);
+
+    const grouped = new Map();
+    state.rules.forEach(rule => {
+      if (!grouped.has(rule.giver)) grouped.set(rule.giver, []);
+      grouped.get(rule.giver).push(rule.receiver);
+    });
+
+    // show givers in current name order, then any givers not in names
+    const giverOrder = [];
+    state.names.forEach(n => { if (grouped.has(n)) giverOrder.push(n); });
+    grouped.forEach((_, g) => { if (!giverOrder.includes(g)) giverOrder.push(g); });
+
+    giverOrder.forEach(giver => {
+      const receivers = grouped.get(giver) || [];
+      const giverValid = state.names.includes(giver);
       const li = document.createElement('li');
-      li.className = 'item';
-      const note = valid ? '' : ' <span class="muted">(name missing)</span>';
-      li.innerHTML = `<span><strong>${escapeHtml(rule.giver)}</strong> can’t get <strong>${escapeHtml(rule.receiver)}</strong>${note}</span><button class="danger" data-remove-rule="${idx}">Remove</button>`;
+      li.className = 'rule-group';
+
+      const receiverTags = receivers.map(receiver => {
+        const valid = giverValid && state.names.includes(receiver);
+        const note = valid ? '' : ' <span class="muted">(missing)</span>';
+        return `<span class="rule-tag"><span>${escapeHtml(receiver)}${note}</span><button type="button" class="remove-tag" data-remove-giver="${escapeHtml(giver)}" data-remove-receiver="${escapeHtml(receiver)}" aria-label="Remove rule ${escapeHtml(giver)} can’t get ${escapeHtml(receiver)}">&times;</button></span>`;
+      }).join('');
+
+      const giverNote = giverValid ? '' : ' <span class="muted">(name missing)</span>';
+      li.innerHTML = `
+        <div class="rule-group-header"><strong>${escapeHtml(giver)}</strong> can’t get:${giverNote}</div>
+        <div class="rule-tags">${receiverTags}</div>
+      `;
       els.rulesList.appendChild(li);
     });
 
@@ -285,10 +308,12 @@
   });
 
   els.rulesList.addEventListener('click', e => {
-    const btn = e.target.closest('[data-remove-rule]');
+    const btn = e.target.closest('[data-remove-giver][data-remove-receiver]');
     if (!btn) return;
-    const idx = Number(btn.getAttribute('data-remove-rule'));
-    if (Number.isInteger(idx)) {
+    const giver = btn.getAttribute('data-remove-giver');
+    const receiver = btn.getAttribute('data-remove-receiver');
+    const idx = state.rules.findIndex(r => r.giver === giver && r.receiver === receiver);
+    if (idx !== -1) {
       state.rules.splice(idx, 1);
       setStatus(els.configStatus, 'Rule removed.', 'success');
       saveState();
