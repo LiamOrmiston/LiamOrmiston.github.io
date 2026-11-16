@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Secret Santa Generator</title>
+  <link rel="stylesheet" href="secret-santa.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Secret Santa Generator</h1>
+    <p class="lead">Create your group, add one-way “can’t get” rules, then generate encoded assignments. Matches are not shown here.</p>
+
+    <section class="card" aria-labelledby="names-heading">
+      <h2 id="names-heading">1. Names</h2>
+      <div class="row">
+        <input type="text" id="nameInput" placeholder="Enter a name" autocomplete="off" />
+        <button id="addNameBtn" class="primary" type="button">Add name</button>
+      </div>
+      <p id="namesEmpty" class="muted">No names yet.</p>
+      <ul id="namesList"></ul>
+    </section>
+
+    <section class="card" aria-labelledby="rules-heading">
+      <h2 id="rules-heading">2. Rules (one-way)</h2>
+      <p class="muted">A rule means the <strong>giver</strong> cannot be assigned the <strong>receiver</strong>. (It does not block the reverse.)</p>
+      <div class="row">
+        <div>
+          <label for="giverSelect">Giver can’t get</label>
+          <select id="giverSelect"></select>
+        </div>
+        <div>
+          <label for="receiverSelect">Receiver(s)</label>
+          <select id="receiverSelect" multiple size="6"></select>
+          <p class="note">Tip: hold Ctrl (Windows) / Cmd (Mac) to select multiple receivers.</p>
+        </div>
+        <div style="flex:0 0 auto; align-self:flex-end;">
+          <button id="addRuleBtn" type="button">Add rule(s)</button>
+        </div>
+      </div>
+      <p id="rulesEmpty" class="muted">No rules yet.</p>
+      <ul id="rulesList"></ul>
+    </section>
+
+    <section class="card" aria-labelledby="config-heading">
+      <h2 id="config-heading">3. Config file &amp; tracking (optional)</h2>
+      <p class="muted">Export/import a <code class="inline">config.json</code> containing names and rules. You can commit this file to your site if you want the rules saved in the repo.</p>
+      <div class="field">
+        <label for="trackingEndpoint">Formspree tracking endpoint (optional)</label>
+        <input type="text" id="trackingEndpoint" placeholder="https://formspree.io/f/mjywyeqy" autocomplete="off" />
+        <p class="note">If set, the reveal page will send a best-effort “who looked up &amp; when” event (not their match) to this Formspree form on a successful reveal.</p>
+      </div>
+      <div class="actions">
+        <button id="exportConfigBtn" type="button">Export config.json</button>
+        <label class="btn" for="importConfigInput">Import config.json</label>
+        <input id="importConfigInput" type="file" accept="application/json,.json" class="hidden" />
+      </div>
+      <div id="configStatus" class="status" aria-live="polite"></div>
+    </section>
+
+    <section class="card" aria-labelledby="generate-heading">
+      <h2 id="generate-heading">4. Generate assignments</h2>
+      <p class="muted">Generates a valid one-way assignment (no self-matches, all rules respected) and encodes it with Base64 so it’s not shown in plain text. It’s obfuscation, not encryption.</p>
+      <div class="actions">
+        <button id="generateBtn" class="primary" type="button">Generate</button>
+        <button id="downloadAssignmentsBtn" type="button" disabled>Download assignments.json</button>
+      </div>
+      <div id="generateStatus" class="status" aria-live="polite"></div>
+      <p class="note">After downloading, place <code class="inline">assignments.json</code> in the <code class="inline">secret-santa/</code> folder (same folder as the reveal page, <code class="inline">index.html</code>) and send friends the link to <code class="inline">/secret-santa/</code>.</p>
+    </section>
+
+    <p class="muted"><a href="index.html">Open reveal page</a></p>
+  </main>
+  <script src="admin.js"></script>
+</body>
+</html>
